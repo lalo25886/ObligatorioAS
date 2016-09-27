@@ -24,7 +24,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author alvaro
  */
-@Path("usuario")
+@Path("cliente")
 public class ClienteResource {
     
     @EJB
