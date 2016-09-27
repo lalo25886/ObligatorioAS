@@ -15,3 +15,9 @@ nbproject/
 *.jar
 *.war
 *.ear
+/ObligatorioAS_2016-war/build/
+/ObligatorioAS_2016-ejb/dist/
+/ObligatorioAS_2016-ejb/build/
+/build/
+/dist/
+/ObligatorioAS_2016-war/dist/
