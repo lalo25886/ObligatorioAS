@@ -67,7 +67,7 @@ public class CadeteBean {
         
         List<CadeteEntity> list = 
                 em
-                    .createQuery("select c from Cadete c")
+                    .createQuery("select c.* from CadeteEntity c")
                     .getResultList();
         
         return list;
@@ -82,7 +82,7 @@ public class CadeteBean {
     }
     
     public List<CadeteEntity> buscar(String nombre) {
-        List<CadeteEntity> list = em.createQuery("select c from Cadete c "
+        List<CadeteEntity> list = em.createQuery("select c.* from CadeteEntity c "
         + "where u.nombre = :nombre").setParameter("nombre", nombre).getResultList();
         return list;
     }
