@@ -5,7 +5,7 @@
  */
 package servicios.service;
 
-import Dominios.VehiculoBean;
+import dominio.VehiculoBean;
 import Entidades.VehiculoEntity;
 import com.google.gson.Gson;
 import java.util.List;
@@ -36,6 +36,7 @@ public class VehiculoResource {
     }
 
     @GET
+    @Path("getJson")
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson() {
         List<VehiculoEntity> list = vehiculoBean.listar();
@@ -44,6 +45,7 @@ public class VehiculoResource {
     }
 
     @POST
+    @Path("agregarVehiculo")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response agregar(String body) {
         Gson gson = new Gson();
@@ -63,5 +65,46 @@ public class VehiculoResource {
         }
         return r;
     } 
-    
+    @POST
+    @Path("modificarVehiculo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response modificar(String body) {
+        Gson gson = new Gson();
+        VehiculoEntity u = gson.fromJson(body, VehiculoEntity.class);
+        Response r;
+        VehiculoEntity modificado = vehiculoBean.modificar(u);
+        if (modificado == null) {
+            r = Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity("afadfadf")
+                    .build();
+        } else {
+            r = Response
+                    .status(Response.Status.CREATED)
+                    .entity(gson.toJson(modificado))
+                    .build();
+        }
+        return r;
+    } 
+     @POST
+    @Path("eliminarVehiculo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response eliminar(String body) {
+        Gson gson = new Gson();
+        VehiculoEntity u = gson.fromJson(body, VehiculoEntity.class);
+        Response r;
+        Boolean modificado = vehiculoBean.eliminar(u);
+        if (modificado == false) {
+            r = Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity("afadfadf")
+                    .build();
+        } else {
+            r = Response
+                    .status(Response.Status.CREATED)
+                    .entity(gson.toJson(modificado))
+                    .build();
+        }
+        return r;
+    } 
 }

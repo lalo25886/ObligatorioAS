@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Dominios;
+package dominio;
 
 import Entidades.CadeteEntity;
+import com.google.gson.Gson;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -33,57 +34,66 @@ public class CadeteBean {
         return agregar(u.getNombre());
     }
  
-    public CadeteEntity agregar(String nombre) {
-        
-        CadeteEntity u = new CadeteEntity();
-        u.setNombre(nombre);
-        
-        
+//    public CadeteEntity agregar(String nombre) {
+//        
+//        CadeteEntity u = new CadeteEntity();
+//        u.setNombre(nombre);
+//        
+//        
+//        em.persist(u);
+//        
+//        return u;
+//    }
+    public CadeteEntity agregar(String body) {
+       Gson gson = new Gson();
+       CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
         em.persist(u);
-        
         return u;
     }
-    
     public CadeteEntity modificar(Long id, String nombreNuevo) {
         
         CadeteEntity u = em.find(CadeteEntity.class, id);
-        
-        u.setNombre(nombreNuevo);
-        
-        em.merge(u);
-        
+        u.setNombre(nombreNuevo);        
+        em.merge(u);        
         return u;
     }
-    
-    public boolean eliminar(Long id) {
-        CadeteEntity u = em.find(CadeteEntity.class, id);
-        
-        em.remove(u);
+      public CadeteEntity modificar(CadeteEntity c) {
+        em.merge(c);        
+        return c;
+    }
+     public boolean eliminar(CadeteEntity c) {
+       CadeteEntity aBorrar = em.find(CadeteEntity.class, c.getId());
+        em.remove(aBorrar);
         
         return true;
     }
     
-    public List<CadeteEntity> listar() {
-        
+    public boolean eliminar(Long id) {
+        CadeteEntity u = em.find(CadeteEntity.class, id);
+        em.remove(u);        
+        return true;
+    }
+    
+    public List<CadeteEntity> listar() {        
         List<CadeteEntity> list = 
                 em
-                    .createQuery("select c.* from CadeteEntity c")
+                    .createQuery("select u from CadeteEntity u")
                     .getResultList();
         
         return list;
     }
-    
+   
     public Cadete buscar(Long id) {
         CadeteEntity ent = em.find(CadeteEntity.class, id);
-        Cadete u = new Cadete();
-        u.setId(ent.getId());
-        u.setNombre(ent.getNombre());
-        return u;
+        Cadete c = new Cadete();
+        c.setId(ent.getId());
+        c.setNombre(ent.getNombre());
+        return c;
     }
     
     public List<CadeteEntity> buscar(String nombre) {
-        List<CadeteEntity> list = em.createQuery("select c.* from CadeteEntity c "
-        + "where u.nombre = :nombre").setParameter("nombre", nombre).getResultList();
+        List<CadeteEntity> list = em.createQuery("select c from CadeteEntity c "
+        + "where c.nombre = :nombre").setParameter("nombre", nombre).getResultList();
         return list;
     }
 

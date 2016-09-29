@@ -5,7 +5,7 @@
  */
 package servicios.service;
 
-import Dominios.CadeteBean;
+import dominio.CadeteBean;
 import Entidades.CadeteEntity;
 import com.google.gson.Gson;
 import java.util.List;
@@ -36,6 +36,7 @@ public class CadeteResource {
     }
 
     @GET
+    @Path("getJson")
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson() {
         List<CadeteEntity> list = cadeteBean.listar();
@@ -44,6 +45,7 @@ public class CadeteResource {
     }
 
     @POST
+    @Path("agregarCadete")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response agregar(String body) {
         Gson gson = new Gson();
@@ -63,5 +65,46 @@ public class CadeteResource {
         }
         return r;
     } 
-    
+    @POST
+    @Path("modificarCadete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response modificar(String body) {
+        Gson gson = new Gson();
+        CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
+        Response r;
+        CadeteEntity modificado = cadeteBean.modificar(u);
+        if (modificado == null) {
+            r = Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity("afadfadf")
+                    .build();
+        } else {
+            r = Response
+                    .status(Response.Status.CREATED)
+                    .entity(gson.toJson(modificado))
+                    .build();
+        }
+        return r;
+    } 
+     @POST
+    @Path("eliminarCadete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response eliminar(String body) {
+        Gson gson = new Gson();
+        CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
+        Response r;
+        Boolean modificado = cadeteBean.eliminar(u);
+        if (modificado == false) {
+            r = Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity("afadfadf")
+                    .build();
+        } else {
+            r = Response
+                    .status(Response.Status.CREATED)
+                    .entity(gson.toJson(modificado))
+                    .build();
+        }
+        return r;
+    } 
 }
