@@ -5,7 +5,7 @@
  */
 package servicios.service;
 
-import Dominio.CadeteBean;
+import Dominios.CadeteBean;
 import Entidades.CadeteEntity;
 import com.google.gson.Gson;
 import java.util.List;

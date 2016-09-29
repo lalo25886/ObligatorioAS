@@ -5,7 +5,7 @@
  */
 package servicios.service;
 
-import Dominio.VehiculoBean;
+import Dominios.VehiculoBean;
 import Entidades.VehiculoEntity;
 import com.google.gson.Gson;
 import java.util.List;
