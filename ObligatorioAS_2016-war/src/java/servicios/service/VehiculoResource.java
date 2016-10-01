@@ -5,8 +5,8 @@
  */
 package servicios.service;
 
-import dominio.VehiculoBean;
-import Entidades.VehiculoEntity;
+import ObligatorioAS_2016.vehiculo.VehiculoBean;
+import ObligatorioAS_2016.entidades.VehiculoEntity;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.EJB;

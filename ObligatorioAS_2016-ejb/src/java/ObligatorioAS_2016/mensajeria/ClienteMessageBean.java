@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mensajeria;
+package ObligatorioAS_2016.mensajeria;
 
 import java.util.logging.Level;
 import javax.ejb.ActivationConfigProperty;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entidades;
+package ObligatorioAS_2016.entidades;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @XmlRootElement
-public class CadeteEntity implements Serializable {
+public class VehiculoEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -30,10 +30,26 @@ public class CadeteEntity implements Serializable {
     
     @NotNull
     @Column(length = 300)
-    private String nombre;
+    private String matricula;
     
-    @Column(unique = true)
-    private String email;
+    @Column(unique = false)
+    private String descripcion;
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
     
     public Long getId() {
         return id;
@@ -43,22 +59,6 @@ public class CadeteEntity implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -69,10 +69,10 @@ public class CadeteEntity implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CadeteEntity)) {
+        if (!(object instanceof VehiculoEntity)) {
             return false;
         }
-        CadeteEntity other = (CadeteEntity) object;
+        VehiculoEntity other = (VehiculoEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -81,7 +81,7 @@ public class CadeteEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "Entidades.Cadete[ id=" + id + " ]";
+        return "Entidades.Vehiculo[ id=" + id + " ]";
     }
     
 }

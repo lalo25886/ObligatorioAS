@@ -5,8 +5,8 @@
  */
 package servicios.service;
 
-import dominio.CadeteBean;
-import Entidades.CadeteEntity;
+import ObligatorioAS_2016.cadete.CadeteBean;
+import ObligatorioAS_2016.entidades.CadeteEntity;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.EJB;

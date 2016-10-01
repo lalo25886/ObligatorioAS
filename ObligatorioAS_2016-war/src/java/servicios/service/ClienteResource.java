@@ -73,9 +73,9 @@
  */
 package servicios.service;
 
-import Entidades.ClienteEntity;
+import ObligatorioAS_2016.entidades.ClienteEntity;
 import com.google.gson.Gson;
-import dominio.ClienteBean;
+import ObligatorioAS_2016.cliente.ClienteBean;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;

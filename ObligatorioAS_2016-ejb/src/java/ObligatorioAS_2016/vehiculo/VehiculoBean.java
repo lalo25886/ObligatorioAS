@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dominio;
+package ObligatorioAS_2016.vehiculo;
 
-import Entidades.VehiculoEntity;
+import ObligatorioAS_2016.entidades.VehiculoEntity;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.annotation.PostConstruct;

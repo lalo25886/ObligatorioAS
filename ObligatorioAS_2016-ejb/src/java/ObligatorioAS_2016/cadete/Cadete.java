@@ -1,5 +1,7 @@
 
-package dominio;
+package ObligatorioAS_2016.cadete;
+
+import ObligatorioAS_2016.vehiculo.Vehiculo;
 
 /**
  *
