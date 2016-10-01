@@ -39,6 +39,7 @@ public class ClienteMessageBean implements MessageListener {
         } catch (JMSException ex) {
              System.err.println(ex.getMessage());
            // Logger.getLogger(PintorMDB.class.getName()).log(Level.SEVERE, null, ex);
+           //Alvaroooooooooooooo
         }
     }
     
