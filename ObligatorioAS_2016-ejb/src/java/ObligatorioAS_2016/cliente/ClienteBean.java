@@ -42,9 +42,10 @@ public class ClienteBean {
     @Resource(lookup = "jms/Queue")
     private Queue queue;
     
+    
     @PersistenceContext
     private EntityManager em;
-    
+       
     @PostConstruct
     private void init() {
         //System.out.println("INSTANCIA CLIENTE BEAN");

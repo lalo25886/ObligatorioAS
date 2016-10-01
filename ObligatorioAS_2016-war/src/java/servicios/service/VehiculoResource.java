@@ -11,8 +11,11 @@ import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import static javax.ws.rs.HttpMethod.PUT;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -55,7 +58,7 @@ public class VehiculoResource {
         if (creado == null) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity("afadfadf")
+                    .entity("Vehiculo")
                     .build();
         } else {
             r = Response
@@ -76,7 +79,7 @@ public class VehiculoResource {
         if (modificado == null) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity("afadfadf")
+                    .entity("Vehiculo")
                     .build();
         } else {
             r = Response
@@ -86,7 +89,7 @@ public class VehiculoResource {
         }
         return r;
     } 
-     @POST
+    @POST
     @Path("eliminarVehiculo")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response eliminar(String body) {
@@ -97,7 +100,7 @@ public class VehiculoResource {
         if (modificado == false) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity("afadfadf")
+                    .entity("Vehiculo")
                     .build();
         } else {
             r = Response

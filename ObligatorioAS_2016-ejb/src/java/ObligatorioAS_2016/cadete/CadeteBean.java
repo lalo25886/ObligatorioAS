@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ObligatorioAS_2016.cadete;
 
 import ObligatorioAS_2016.entidades.CadeteEntity;
@@ -33,17 +28,7 @@ public class CadeteBean {
     public CadeteEntity agregar(CadeteEntity u) {
         return agregar(u.getNombre());
     }
- 
-//    public CadeteEntity agregar(String nombre) {
-//        
-//        CadeteEntity u = new CadeteEntity();
-//        u.setNombre(nombre);
-//        
-//        
-//        em.persist(u);
-//        
-//        return u;
-//    }
+
     public CadeteEntity agregar(String body) {
        Gson gson = new Gson();
        CadeteEntity u = gson.fromJson(body, CadeteEntity.class);

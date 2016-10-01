@@ -55,7 +55,7 @@ public class CadeteResource {
         if (creado == null) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity("afadfadf")
+                    .entity("Cadete")
                     .build();
         } else {
             r = Response
@@ -76,7 +76,7 @@ public class CadeteResource {
         if (modificado == null) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity("afadfadf")
+                    .entity("Cadete")
                     .build();
         } else {
             r = Response
@@ -97,7 +97,7 @@ public class CadeteResource {
         if (modificado == false) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity("afadfadf")
+                    .entity("Cadete")
                     .build();
         } else {
             r = Response

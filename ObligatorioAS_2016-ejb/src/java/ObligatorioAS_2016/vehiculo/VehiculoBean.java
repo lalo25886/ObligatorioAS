@@ -41,13 +41,7 @@ public class VehiculoBean {
         
         return u;
     }
-//    public VehiculoEntity agregar(String matricula) {    
-//        VehiculoEntity v = new VehiculoEntity();
-//        v.setMatricula(matricula);        
-//        em.persist(v);
-//        
-//        return v;
-//    }
+
       public VehiculoEntity modificar(VehiculoEntity c) {
         em.merge(c);        
         return c;

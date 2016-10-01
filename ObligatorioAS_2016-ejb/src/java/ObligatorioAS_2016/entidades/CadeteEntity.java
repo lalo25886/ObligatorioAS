@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ObligatorioAS_2016.entidades;
 
 import java.io.Serializable;
@@ -11,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -35,6 +31,10 @@ public class CadeteEntity implements Serializable {
     @Column(unique = true)
     private String email;
     
+    @NotNull
+    @JoinColumn(name = "vehiculo_id")
+    private Long vehiculo;
+    
     public Long getId() {
         return id;
     }
@@ -57,6 +57,14 @@ public class CadeteEntity implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+     public Long getVehiculo() {
+        return this.vehiculo;
+    }
+
+    public void setVehiculo(Long id) {
+        this.vehiculo = id;
     }
     
     @Override

@@ -13,7 +13,7 @@ public class Cadete {
     private String nombre;
     private String apellido;
     private String email;
-    private Vehiculo vehiculo;
+    private Long vehiculo;
 
     public Long getId() {
         return id;
@@ -55,11 +55,11 @@ public class Cadete {
         this.email = email;
     }
 
-    public Vehiculo getVehiculo() {
+    public Long getVehiculo() {
         return vehiculo;
     }
 
-    public void setVehiculo(Vehiculo vehiculo) {
+    public void setVehiculo(Long vehiculo) {
         this.vehiculo = vehiculo;
     }
     
