@@ -1,12 +1,18 @@
 package ObligatorioAS_2016.entidades;
 
+import ObligatorioAS_2016.vehiculo.Vehiculo;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,10 +36,10 @@ public class CadeteEntity implements Serializable {
     
     @Column(unique = true)
     private String email;
+   
     
-    @NotNull
-    @JoinColumn(name = "vehiculo_id")
-    private Long vehiculo;
+    @OneToMany
+    private List<VehiculoEntity> vehiculos;
     
     public Long getId() {
         return id;
@@ -58,15 +64,16 @@ public class CadeteEntity implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-     public Long getVehiculo() {
-        return this.vehiculo;
+
+    public List<VehiculoEntity> getVehiculo() {
+        return vehiculos;
     }
 
-    public void setVehiculo(Long id) {
-        this.vehiculo = id;
+    public void setVehiculo(List<VehiculoEntity> vehiculo) {
+        this.vehiculos = vehiculo;
     }
     
+       
     @Override
     public int hashCode() {
         int hash = 0;

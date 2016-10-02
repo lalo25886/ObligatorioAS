@@ -1,8 +1,8 @@
 package servicios.service;
 
+import ObligatorioAS_2016.cliente.ClienteBean;
 import ObligatorioAS_2016.entidades.ClienteEntity;
 import com.google.gson.Gson;
-import ObligatorioAS_2016.cliente.ClienteBean;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;

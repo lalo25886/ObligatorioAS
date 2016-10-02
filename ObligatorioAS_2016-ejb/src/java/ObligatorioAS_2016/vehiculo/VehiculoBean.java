@@ -32,14 +32,17 @@ public class VehiculoBean {
     }
        
     public VehiculoEntity agregar(VehiculoEntity v) {
-        return agregar(v.getMatricula());
-    }
+        em.persist(v);
+          //enviarCreacionVehiculo(v);
+        return v;
+   }
     public VehiculoEntity agregar(String body) {
        Gson gson = new Gson();
-       VehiculoEntity u = gson.fromJson(body, VehiculoEntity.class);
-       em.persist(u);
+       VehiculoEntity v = gson.fromJson(body, VehiculoEntity.class);
+       em.persist(v);
+       // enviarCreacionVehiculo(v);
+        return v;        
         
-        return u;
     }
 
       public VehiculoEntity modificar(VehiculoEntity c) {

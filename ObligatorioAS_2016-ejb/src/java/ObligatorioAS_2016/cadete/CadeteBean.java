@@ -24,38 +24,41 @@ public class CadeteBean {
     private void init() {
         System.out.println("INSTANCIA CADETE BEAN");
     }
-       
-    public CadeteEntity agregar(CadeteEntity u) {
-        return agregar(u.getNombre());
+    
+    public CadeteEntity agregar(CadeteEntity unCadete) {
+       em.persist(unCadete);
+     //enviarCreacionCadete(unCadete);
+       return unCadete;
     }
 
     public CadeteEntity agregar(String body) {
        Gson gson = new Gson();
-       CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
-        em.persist(u);
-        return u;
+       CadeteEntity unCadete = gson.fromJson(body, CadeteEntity.class);
+        em.persist(unCadete);
+        // enviarCreacionVehiculo(unCadete);
+        return unCadete;
     }
     public CadeteEntity modificar(Long id, String nombreNuevo) {
         
-        CadeteEntity u = em.find(CadeteEntity.class, id);
-        u.setNombre(nombreNuevo);        
-        em.merge(u);        
-        return u;
+        CadeteEntity unCadete = em.find(CadeteEntity.class, id);
+        unCadete.setNombre(nombreNuevo);        
+        em.merge(unCadete);        
+        return unCadete;
     }
-      public CadeteEntity modificar(CadeteEntity c) {
-        em.merge(c);        
-        return c;
+      public CadeteEntity modificar(CadeteEntity unCadete) {
+        em.merge(unCadete);        
+        return unCadete;
     }
-     public boolean eliminar(CadeteEntity c) {
-       CadeteEntity aBorrar = em.find(CadeteEntity.class, c.getId());
+     public boolean eliminar(CadeteEntity unCadete) {
+       CadeteEntity aBorrar = em.find(CadeteEntity.class, unCadete.getId());
         em.remove(aBorrar);
         
         return true;
     }
     
     public boolean eliminar(Long id) {
-        CadeteEntity u = em.find(CadeteEntity.class, id);
-        em.remove(u);        
+        CadeteEntity unCadete = em.find(CadeteEntity.class, id);
+        em.remove(unCadete);        
         return true;
     }
     
@@ -69,17 +72,20 @@ public class CadeteBean {
     }
    
     public Cadete buscar(Long id) {
-        CadeteEntity ent = em.find(CadeteEntity.class, id);
-        Cadete c = new Cadete();
-        c.setId(ent.getId());
-        c.setNombre(ent.getNombre());
-        return c;
+        CadeteEntity unCadeteEntity = em.find(CadeteEntity.class, id);
+        Cadete unCadete = new Cadete();
+        unCadete .setId(unCadeteEntity.getId());
+        unCadete .setNombre(unCadeteEntity.getNombre());
+        return unCadete ;
     }
     
     public List<CadeteEntity> buscar(String nombre) {
-        List<CadeteEntity> list = em.createQuery("select c from CadeteEntity c "
+        List<CadeteEntity> listaCadetes = em.createQuery("select c from CadeteEntity c "
         + "where c.nombre = :nombre").setParameter("nombre", nombre).getResultList();
-        return list;
+        return listaCadetes;
     }
 
+    
+   
+    
 }
