@@ -39,6 +39,11 @@ public class VehiculoEntity implements Serializable {
     @NotNull
     @Column(length = 300)
     private String descripcion;
+    
+    
+    @ManyToOne
+    private CadeteEntity unCadete;
+    
 
     
     public String getMatricula() {
@@ -65,6 +70,15 @@ public class VehiculoEntity implements Serializable {
         this.id = id;
     }
 
+    public CadeteEntity getUnCadete() {
+        return unCadete;
+    }
+
+    public void setUnCadete(CadeteEntity unCadete) {
+        this.unCadete = unCadete;
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

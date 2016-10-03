@@ -1,6 +1,8 @@
 package ObligatorioAS_2016.cadete;
 
 import ObligatorioAS_2016.entidades.CadeteEntity;
+import ObligatorioAS_2016.entidades.VehiculoEntity;
+import ObligatorioAS_2016.vehiculo.Vehiculo;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -85,7 +87,22 @@ public class CadeteBean {
         return listaCadetes;
     }
 
-    
+    public boolean asociarCadeteVehiculo(Long cadeteId,Long vehiculoId) {
+        
+        try {
+            CadeteEntity unCadeteEntity = em.find(CadeteEntity.class, cadeteId);
+            VehiculoEntity unVehiculoEntity = em.find(VehiculoEntity.class, vehiculoId);
+            unCadeteEntity.agregarVehiculoEntity(unVehiculoEntity);
+            em.merge(unCadeteEntity);    
+        } catch (Exception e) {
+            System.out.println("Tengo un error en el asociar");
+            System.out.println(e.toString());
+            
+            return false;
+        }
+        return true;
+        
+    }
    
     
 }

@@ -39,7 +39,7 @@ public class CadeteEntity implements Serializable {
    
     
     @OneToMany
-    private List<VehiculoEntity> vehiculos;
+    private List<VehiculoEntity> listaVehiculos;
     
     public Long getId() {
         return id;
@@ -66,11 +66,15 @@ public class CadeteEntity implements Serializable {
     }
 
     public List<VehiculoEntity> getVehiculo() {
-        return vehiculos;
+        return listaVehiculos;
     }
 
     public void setVehiculo(List<VehiculoEntity> vehiculo) {
-        this.vehiculos = vehiculo;
+        this.listaVehiculos = vehiculo;
+    }
+    
+    public void agregarVehiculoEntity(VehiculoEntity unV){
+        this.listaVehiculos.add(unV);
     }
     
        

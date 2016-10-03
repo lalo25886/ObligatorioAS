@@ -11,16 +11,18 @@ import java.util.List;
  */
 public class Cadete extends Usuario{
     
-    private List<Vehiculo> vehiculo;
+    private List<Vehiculo> listaVehiculos;
 
     public List<Vehiculo> getVehiculo() {
-        return vehiculo;
+        return listaVehiculos;
     }
 
-    public void setVehiculo(List<Vehiculo> vehiculo) {
-        this.vehiculo = vehiculo;
+    public void setVehiculo(List<Vehiculo> vehiculos) {
+        this.listaVehiculos = vehiculos;
     }
 
- 
+    public void agregarVehiculo(Vehiculo unV){
+        this.listaVehiculos.add(unV);
+    }
     
 }

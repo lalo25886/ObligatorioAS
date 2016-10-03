@@ -107,4 +107,28 @@ public class CadeteResource {
         }
         return r;
     } 
+    
+    @POST
+    @Path("asociarVehiculo")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response asociarVehiculo(String body) {
+        Gson gson = new Gson();
+        CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
+        System.out.println(body.toString());
+        Response r;
+        
+        boolean asociado = cadeteBean.asociarCadeteVehiculo(u.getId(),u.getId());
+        if (!asociado) {
+            r = Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity("No se pudeo asociar")
+                    .build();
+        } else {
+            r = Response
+                    .status(Response.Status.CREATED)
+                    .entity(gson.toJson(asociado))
+                    .build();
+        }
+        return r;
+    } 
 }
