@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import org.apache.log4j.Logger;
 /**
  *
  * @author Gonzalo
@@ -18,7 +18,8 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class CadeteBean {
-
+  static Logger log = Logger.getLogger("FILE");
+    
   @PersistenceContext
     private EntityManager em;
     
@@ -30,6 +31,11 @@ public class CadeteBean {
     public CadeteEntity agregar(CadeteEntity unCadete) {
        em.persist(unCadete);
      //enviarCreacionCadete(unCadete);
+      log.debug("ESTO ES DE NIVEL DEBUG"); 
+        log.info("ESTO ES DE NIVEL INFO");
+        log.error("ESTO ES DE NIVEL ERROR!");
+        log.fatal("ESTO ES DE NIVEL FATAL");
+        log.warn("ESTO ES DE NIVEL WARN");
        return unCadete;
     }
 
@@ -37,6 +43,11 @@ public class CadeteBean {
        Gson gson = new Gson();
        CadeteEntity unCadete = gson.fromJson(body, CadeteEntity.class);
         em.persist(unCadete);
+         log.debug("ESTO ES DE NIVEL DEBUG"); 
+        log.info("ESTO ES DE NIVEL INFO");
+        log.error("ESTO ES DE NIVEL ERROR!");
+        log.fatal("ESTO ES DE NIVEL FATAL");
+        log.warn("ESTO ES DE NIVEL WARN");
         // enviarCreacionVehiculo(unCadete);
         return unCadete;
     }
