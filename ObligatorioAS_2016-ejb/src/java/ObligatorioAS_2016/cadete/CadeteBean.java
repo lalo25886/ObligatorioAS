@@ -31,11 +31,6 @@ public class CadeteBean {
     public CadeteEntity agregar(CadeteEntity unCadete) {
        em.persist(unCadete);
      //enviarCreacionCadete(unCadete);
-      log.debug("ESTO ES DE NIVEL DEBUG"); 
-        log.info("ESTO ES DE NIVEL INFO");
-        log.error("ESTO ES DE NIVEL ERROR!");
-        log.fatal("ESTO ES DE NIVEL FATAL");
-        log.warn("ESTO ES DE NIVEL WARN");
        return unCadete;
     }
 

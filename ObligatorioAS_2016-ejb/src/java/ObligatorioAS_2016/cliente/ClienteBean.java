@@ -34,14 +34,23 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class ClienteBean {
-    private static final Logger LOGGER= Logger.getLogger("logalvaro.log");
-  
+    
+    static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger("FILE");
     @Resource(lookup = "jms/ConnectionFactory")
     private ConnectionFactory connectionFactory;
     
     @Resource(lookup = "jms/Queue")
     private Queue queue;
     
+    
+    @Resource(lookup = "jms/QueueCadete")
+    private Queue queueCadete;
+    
+    @Resource(lookup = "jms/QueueEmisor")
+    private Queue queueEmisor;
+    
+    @Resource(lookup = "jms/QueueReceptor")
+    private Queue queueReceptor;
     
     @PersistenceContext
     private EntityManager em;
@@ -107,16 +116,22 @@ public class ClienteBean {
     private void enviarCreacionCliente(ClienteEntity unCliente) {
         
         try (Connection connection = connectionFactory.createConnection(); 
-            Session session = connection.createSession()) {
-            MessageProducer productorDeMensaje = session.createProducer(queue);
-            Message mensaje = session.createTextMessage("Cliente creado:" + unCliente.getNombre());
+          Session session = connection.createSession()) {
+            MessageProducer productorDeMensajeCadete = session.createProducer(queueCadete);
+            MessageProducer productorDeMensajeEmisor = session.createProducer(queueEmisor);
+            MessageProducer productorDeMensajeReceptor = session.createProducer(queueReceptor);
+         
+            Message mensaje = session.createTextMessage("Estimado cadete tiene un envio pendiente:");
+            productorDeMensajeCadete.send(mensaje);
+            mensaje = session.createTextMessage("Estimado cliente su envio esta siendo creado:" );
+            productorDeMensajeEmisor.send(mensaje);
+            mensaje = session.createTextMessage("Querido cliente su envio esta siendo enviado :" );
+            productorDeMensajeReceptor.send(mensaje);
             
-            productorDeMensaje.send(mensaje);
-            System.out.println("Cliente :" + unCliente.getNombre());
-            LOGGER.log(Level.FINEST,"Prueba logger");
+            log.info("Envio realizado");
             
         } catch (JMSException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            log.error("ERROR:"  + ex.getMessage() );
         }
         
     }

@@ -11,9 +11,7 @@ import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -27,6 +25,7 @@ import javax.jms.Queue;
 import javax.jms.Session;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -35,13 +34,20 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class EnvioBean {
-    private static final Logger LOGGER= Logger.getLogger("logaGonzalo.log");
-  
+    
+    static Logger log = Logger.getLogger("FILE");
+    
     @Resource(lookup = "jms/ConnectionFactory")
     private ConnectionFactory connectionFactory;
     
-    @Resource(lookup = "jms/Queue")
-    private Queue queue;
+    @Resource(lookup = "jms/QueueCadete")
+    private Queue queueCadete;
+    
+    @Resource(lookup = "jms/QueueEmisor")
+    private Queue queueEmisor;
+    
+    @Resource(lookup = "jms/QueueReceptor")
+    private Queue queueReceptor;
     
     
     @PersistenceContext
@@ -62,33 +68,24 @@ public class EnvioBean {
     public EnvioEntity agregar(String body) {
        Gson gson = new Gson();
        EnvioEntity e = gson.fromJson(body, EnvioEntity.class);
-        
         em.persist(e);
         enviarCreacionEnvio(e);
         return e;
     }
     
     public EnvioEntity modificar(EnvioEntity u) {
-        
         em.merge(u);
-        
         return u;
     }
     
     public boolean eliminar(EnvioEntity u) {
        EnvioEntity aBorrar = em.find(EnvioEntity.class, u.getId());
         em.remove(aBorrar);
-        
         return true;
     }
     
     public List<EnvioEntity> listar() {
-        
-        List<EnvioEntity> list = 
-                em
-                    .createQuery("select e from EnvioEntity e")
-                    .getResultList();
-        
+        List<EnvioEntity> list = em.createQuery("select e from EnvioEntity e").getResultList();
         return list;
     }
     
@@ -109,20 +106,24 @@ public class EnvioBean {
         
         try (Connection connection = connectionFactory.createConnection(); 
             Session session = connection.createSession()) {
-            MessageProducer productorDeMensaje = session.createProducer(queue);
-            Message mensaje = session.createTextMessage("Envio creado:" + unEnvio.getDescripcion());
-            productorDeMensaje.send(mensaje);
-            System.out.println("Envio :" + unEnvio.getDescripcion());
-            LOGGER.log(Level.FINEST,"Prueba logger");
+            MessageProducer productorDeMensajeCadete = session.createProducer(queueCadete);
+            MessageProducer productorDeMensajeEmisor = session.createProducer(queueEmisor);
+            MessageProducer productorDeMensajeReceptor = session.createProducer(queueReceptor);
+         
+            Message mensaje = session.createTextMessage("Estimado cadete tiene un envio pendiente:" + unEnvio.getCadete().toString());
+            productorDeMensajeCadete.send(mensaje);
+            mensaje = session.createTextMessage("Estimado cliente su envio esta siendo creado:" + unEnvio.getEmisor().toString());
+            productorDeMensajeEmisor.send(mensaje);
+            mensaje = session.createTextMessage("Querido cliente su envio esta siendo enviado :" + unEnvio.getReceptor().toString());
+            productorDeMensajeReceptor.send(mensaje);
+            
+            log.info("Envio realizado");
             
         } catch (JMSException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            log.error("ERROR:"  + ex.getMessage() );
         }
         
     }
-    public void metodo() throws IOException {
-    LogManager.getLogManager().readConfiguration(
-        new FileInputStream("./log.properties"));
-}
+   
 
 }

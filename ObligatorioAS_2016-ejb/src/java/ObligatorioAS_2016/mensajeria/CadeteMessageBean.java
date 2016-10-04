@@ -11,31 +11,34 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 import org.apache.log4j.Logger;
-
 /**
  *
  * @author Gustavo
  */
 @MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "jms/QueueEmisor"),
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "jms/QueueCadete"),
     @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
-public class ClienteMessageBean implements MessageListener {
+public class CadeteMessageBean implements MessageListener {
+   
+    static Logger log = Logger.getLogger("FILE");
     
-    public ClienteMessageBean() {
+    public CadeteMessageBean() {
     }
-     static Logger log =  Logger.getLogger("FILE");
+    
     @Override
     public void onMessage(Message message) {
         try {
-       
+
             TextMessage txt = (TextMessage) message;
             String msg = txt.getText();
-            log.info("Mensaje del cadete recibido.");
-            
-         } catch (JMSException ex) {
+
+               log.info("Mensaje del cadete recibido.");
+
+        } catch (JMSException ex) {
             log.error("ERROR:"  + ex.getMessage() );
         }
+  
     }
     
 }

@@ -39,7 +39,7 @@ public class EnvioEntity implements Serializable {
     private ClienteEntity emisor;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    private ClienteEntity recepector;
+    private ClienteEntity receptor;
     
     @ManyToOne(fetch = FetchType.EAGER)
     private CadeteEntity cadete;
@@ -81,13 +81,14 @@ public class EnvioEntity implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public ClienteEntity getRecepector() {
-        return recepector;
+    public ClienteEntity getReceptor() {
+        return receptor;
     }
 
-    public void setRecepector(ClienteEntity recepector) {
-        this.recepector = recepector;
+    public void setReceptor(ClienteEntity receptor) {
+        this.receptor = receptor;
     }
+
 
     public CadeteEntity getCadete() {
         return cadete;
