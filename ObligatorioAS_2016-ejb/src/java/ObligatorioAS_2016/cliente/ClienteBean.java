@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,39 +22,47 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class ClienteBean {
-    
-    static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger("FILE");
-
+    static Logger log = Logger.getLogger("FILE");
     
     @PersistenceContext
     private EntityManager em;
        
     @PostConstruct
     private void init() {
-        //System.out.println("INSTANCIA CLIENTE BEAN");
+
     }
        
-    public ClienteEntity agregar(ClienteEntity u) {
-        em.persist(u);
-        return u;
-    }
- 
-    public ClienteEntity agregar(String body) {
-       Gson gson = new Gson();
-       ClienteEntity u = gson.fromJson(body, ClienteEntity.class);
-        em.persist(u);
-        return u;
+    public ClienteEntity agregar(ClienteEntity unClienteEntity) {
+        try {
+            em.persist(unClienteEntity);
+            return unClienteEntity;     
+        } catch (Exception e) {
+            log.error("Error en agregar Cliente Entity: "+ e.getMessage());
+        }
+         return null;
     }
     
-    public ClienteEntity modificar(ClienteEntity u) {
-        em.merge(u);
-        return u;
+    public ClienteEntity modificar(ClienteEntity unClienteEntity) {
+        try {
+            em.merge(unClienteEntity);
+            return unClienteEntity;
+        } catch (Exception e) {
+             log.error("Error en eliminar Cliente Entity: "+ e.getMessage());
+        }
+        return null;
+       
     }
     
-    public boolean eliminar(ClienteEntity u) {
-       ClienteEntity aBorrar = em.find(ClienteEntity.class, u.getId());
-        em.remove(aBorrar);
-        return true;
+    public boolean eliminar(ClienteEntity unClienteEntity) {
+        try {
+            ClienteEntity aBorrar = em.find(ClienteEntity.class, unClienteEntity.getId());
+            em.remove(aBorrar);
+            return true;
+        } catch (Exception e) {
+             log.error("Error en eliminar Cliente Entity: "+ e.getMessage());
+
+        }
+          return false;
     }
     
     public List<ClienteEntity> listar() {
