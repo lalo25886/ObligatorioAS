@@ -114,24 +114,5 @@ public class CadeteBean {
         List<CadeteEntity> listaCadetes = em.createQuery("select c from CadeteEntity c "
         + "where c.nombre = :nombre").setParameter("nombre", nombre).getResultList();
         return listaCadetes;
-    }
-
-    public boolean asociarCadeteVehiculo(Long cadeteId,Long vehiculoId) {
-        
-        try {
-            CadeteEntity unCadeteEntity = em.find(CadeteEntity.class, cadeteId);
-            VehiculoEntity unVehiculoEntity = em.find(VehiculoEntity.class, vehiculoId);
-            unCadeteEntity.agregarVehiculoEntity(unVehiculoEntity);
-            em.merge(unCadeteEntity);    
-        } catch (Exception e) {
-            System.out.println("Tengo un error en el asociar");
-            System.out.println(e.toString());
-            
-            return false;
-        }
-        return true;
-        
-    }
-   
-    
+    }   
 }
