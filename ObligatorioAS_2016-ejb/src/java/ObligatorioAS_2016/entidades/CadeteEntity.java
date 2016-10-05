@@ -17,90 +17,97 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author Gonzalo
- */
+*
+* @author Gonzalo
+*/
 @Entity
 @XmlRootElement
 public class CadeteEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+   private static final long serialVersionUID = 1L;
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-    
-    @NotNull
-    @Column(length = 300)
-    private String nombre;
-    
-    @Column(unique = true)
-    private String email;
+   @Column(length = 300,unique = true)
+   private String ci;
    
-    
-    @OneToMany
-    private List<VehiculoEntity> listaVehiculos;
-    
-    public Long getId() {
-        return id;
-    }
+   @NotNull
+   @Column(length = 300)
+   private String nombre;
+   
+   @Column(length = 300)
+   private String email;
+      
+   @OneToMany
+   private List<VehiculoEntity> listaVehiculos;
+   
+   public Long getId() {
+       return id;
+   }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+   public void setId(Long id) {
+       this.id = id;
+   }
 
-    public String getNombre() {
-        return nombre;
-    }
+   public String getCi() {
+       return ci;
+   }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+   public void setCi(String ci) {
+       this.ci = ci;
+   }
 
-    public String getEmail() {
-        return email;
-    }
+   public List<VehiculoEntity> getListaVehiculos() {
+       return listaVehiculos;
+   }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+   public void setListaVehiculos(List<VehiculoEntity> listaVehiculos) {
+       this.listaVehiculos = listaVehiculos;
+   }    
+   
+   public String getNombre() {
+       return nombre;
+   }
 
-    public List<VehiculoEntity> getVehiculo() {
-        return listaVehiculos;
-    }
+   public void setNombre(String nombre) {
+       this.nombre = nombre;
+   }
 
-    public void setVehiculo(List<VehiculoEntity> vehiculo) {
-        this.listaVehiculos = vehiculo;
-    }
-    
-    public void agregarVehiculoEntity(VehiculoEntity unV){
-        this.listaVehiculos.add(unV);
-    }
-    
-       
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
+   public String getEmail() {
+       return email;
+   }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CadeteEntity)) {
-            return false;
-        }
-        CadeteEntity other = (CadeteEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
+   public void setEmail(String email) {
+       this.email = email;
+   }
 
-    @Override
-    public String toString() {
-        return "Entidades.Cadete[ id=" + id + " ]";
-    }
-    
+   
+   
+      
+   @Override
+   public int hashCode() {
+       int hash = 0;
+       hash += (id != null ? id.hashCode() : 0);
+       return hash;
+   }
+
+   @Override
+   public boolean equals(Object object) {
+       // TODO: Warning - this method won't work in the case the id fields are not set
+       if (!(object instanceof CadeteEntity)) {
+           return false;
+       }
+       CadeteEntity other = (CadeteEntity) object;
+       if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+           return false;
+       }
+       return true;
+   }
+
+   @Override
+   public String toString() {
+       return "Entidades.Cadete[ id=" + id + " ]";
+   }
+   
 }

@@ -75,4 +75,11 @@ public class ClienteBean {
         + "where u.nombre = :nombre").setParameter("nombre", nombre).getResultList();
         return list;
     }
+
+    public List<ClienteEntity> listarClientesEnvios() {
+       List<ClienteEntity> listaClientes = em.createQuery("SELECT u FROM ClienteEntity u",ClienteEntity.class).getResultList();
+       return listaClientes;
+   }
+
+
 }
