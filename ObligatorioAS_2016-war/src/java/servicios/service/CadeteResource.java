@@ -7,6 +7,7 @@ package servicios.service;
 
 import ObligatorioAS_2016.cadete.CadeteBean;
 import ObligatorioAS_2016.entidades.CadeteEntity;
+
 import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.EJB;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+
 /**
  *
  * @author Gonzalo
@@ -31,7 +33,7 @@ public class CadeteResource {
     
      @Context
     private UriInfo context;
-
+   
     public CadeteResource() {
     }
 
@@ -50,6 +52,8 @@ public class CadeteResource {
     public Response agregar(String body) {
         Gson gson = new Gson();
         CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
+        System.out.println(u.toString());
+        
         Response r;
         CadeteEntity creado = cadeteBean.agregar(u);
         if (creado == null) {
@@ -108,27 +112,5 @@ public class CadeteResource {
         return r;
     } 
     
-    @POST
-    @Path("asociarVehiculo")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response asociarVehiculo(String body) {
-        Gson gson = new Gson();
-        CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
-        System.out.println(body.toString());
-        Response r;
-        
-        boolean asociado = cadeteBean.asociarCadeteVehiculo(u.getId(),u.getId());
-        if (!asociado) {
-            r = Response
-                    .status(Response.Status.BAD_REQUEST)
-                    .entity("No se pudeo asociar")
-                    .build();
-        } else {
-            r = Response
-                    .status(Response.Status.CREATED)
-                    .entity(gson.toJson(asociado))
-                    .build();
-        }
-        return r;
-    } 
+    
 }
