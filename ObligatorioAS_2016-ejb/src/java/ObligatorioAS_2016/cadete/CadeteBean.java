@@ -25,50 +25,80 @@ public class CadeteBean {
     
     @PostConstruct
     private void init() {
-        System.out.println("INSTANCIA CADETE BEAN");
+        //System.out.println("INSTANCIA CADETE BEAN");
     }
     
     public CadeteEntity agregar(CadeteEntity unCadete) {
-       em.persist(unCadete);
+       try{
+        em.persist(unCadete);
        return unCadete;
+        }catch(Exception e)
+        {
+            log.error("Error al agregar:"+ this.getClass().toString() + e.getMessage());
+            return null;
+        }
     }
 
     public CadeteEntity agregar(String body) {
+        try{
        Gson gson = new Gson();
        CadeteEntity unCadete = gson.fromJson(body, CadeteEntity.class);
         em.persist(unCadete);
         return unCadete;
+        }catch(Exception e)
+        {
+            log.error("Error al agregar:"+ this.getClass().toString() + e.getMessage());
+            return null;
+        }
     }
     public CadeteEntity modificar(Long id, String nombreNuevo) {
-        
+      try{  
         CadeteEntity unCadete = em.find(CadeteEntity.class, id);
         unCadete.setNombre(nombreNuevo);        
         em.merge(unCadete);        
         return unCadete;
+         }catch(Exception e)
+        {
+            log.error("Error al modificar:"+ this.getClass().toString() + e.getMessage());
+            return null;
+        }
     }
       public CadeteEntity modificar(CadeteEntity unCadete) {
-        em.merge(unCadete);        
+       try{
+          em.merge(unCadete);        
         return unCadete;
+         }catch(Exception e)
+        {
+            log.error("Error al modificar:"+ this.getClass().toString() + e.getMessage());
+            return null;
+        }
     }
      public boolean eliminar(CadeteEntity unCadete) {
-       CadeteEntity aBorrar = em.find(CadeteEntity.class, unCadete.getId());
+      try{
+         CadeteEntity aBorrar = em.find(CadeteEntity.class, unCadete.getId());
         em.remove(aBorrar);
-        
         return true;
+         }catch(Exception e)
+        {
+            log.error("Error al eliminar:"+ this.getClass().toString() + e.getMessage());
+            return false;
+        }
     }
     
     public boolean eliminar(Long id) {
+        try{
         CadeteEntity unCadete = em.find(CadeteEntity.class, id);
         em.remove(unCadete);        
         return true;
+         }catch(Exception e)
+        {
+            log.error("Error al eliminar:"+ this.getClass().toString() + e.getMessage());
+            return false;
+        }
     }
     
     public List<CadeteEntity> listar() {        
-        List<CadeteEntity> list = 
-                em
-                    .createQuery("select u from CadeteEntity u")
-                    .getResultList();
-        
+        List<CadeteEntity> list = em.createQuery("select u from CadeteEntity u").getResultList();
         return list;
     }
    
