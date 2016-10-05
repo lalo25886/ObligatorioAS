@@ -31,7 +31,7 @@ public class ClienteMessageBean implements MessageListener {
        
             TextMessage txt = (TextMessage) message;
             String msg = txt.getText();
-            log.info("Mensaje del cadete recibido.");
+            log.info("Mensaje del cadete recibido.  Mensaje:" + msg);
             
          } catch (JMSException ex) {
             log.error("ERROR:"  + ex.getMessage() );

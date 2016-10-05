@@ -28,7 +28,7 @@ public class ReceptorMessageBean implements MessageListener {
        
             TextMessage txt = (TextMessage) message;
             String msg = txt.getText();
-            log.info("Mensaje del Receptor recibido.");
+            log.info("Mensaje del Receptor recibido. Mensaje:" + msg);
             
          } catch (JMSException ex) {
             log.error("ERROR:"  + ex.getMessage() );

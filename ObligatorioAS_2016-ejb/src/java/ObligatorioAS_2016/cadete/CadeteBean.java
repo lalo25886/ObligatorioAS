@@ -90,8 +90,7 @@ public class CadeteBean {
         CadeteEntity unCadete = em.find(CadeteEntity.class, id);
         em.remove(unCadete);        
         return true;
-         }catch(Exception e)
-        {
+        }catch(Exception e){
             log.error("Error al eliminar:"+ this.getClass().toString() + e.getMessage());
             return false;
         }
