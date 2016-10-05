@@ -30,7 +30,6 @@ public class CadeteBean {
     
     public CadeteEntity agregar(CadeteEntity unCadete) {
        em.persist(unCadete);
-     //enviarCreacionCadete(unCadete);
        return unCadete;
     }
 
@@ -38,12 +37,6 @@ public class CadeteBean {
        Gson gson = new Gson();
        CadeteEntity unCadete = gson.fromJson(body, CadeteEntity.class);
         em.persist(unCadete);
-         log.debug("ESTO ES DE NIVEL DEBUG"); 
-        log.info("ESTO ES DE NIVEL INFO");
-        log.error("ESTO ES DE NIVEL ERROR!");
-        log.fatal("ESTO ES DE NIVEL FATAL");
-        log.warn("ESTO ES DE NIVEL WARN");
-        // enviarCreacionVehiculo(unCadete);
         return unCadete;
     }
     public CadeteEntity modificar(Long id, String nombreNuevo) {

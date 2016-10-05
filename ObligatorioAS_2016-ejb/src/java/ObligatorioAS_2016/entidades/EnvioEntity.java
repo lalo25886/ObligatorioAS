@@ -31,7 +31,7 @@ public class EnvioEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @NotNull
+    
     @Column(length = 300)
     private String descripcion;
     
@@ -47,13 +47,14 @@ public class EnvioEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private VehiculoEntity vehiculo;
     
-    @NotNull
     @Column(length = 300)
     private String dirRetiro;
     
-    @NotNull
     @Column(length = 300)
     private String dirRecibo;
+
+    public EnvioEntity() {
+    }
      
     
     
