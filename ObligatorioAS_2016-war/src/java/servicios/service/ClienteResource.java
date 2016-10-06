@@ -105,17 +105,13 @@ public class ClienteResource {
         }
         return r;
     } 
-     //@Path("/envioCliente/{id}")
-   //Consumes(MediaType.TEXT_HTML)
-   //esto va por parametros --> @PathParam("id") String id
-   //El metodo devuelve un string
+     
    @GET
    @Path("getClientesEnvios")
    @Consumes(MediaType.APPLICATION_JSON)
    public String  getClientesEnvios() {
        Gson gson = new Gson();
        List<ClienteEntity> list = clienteBean.listarClientesEnvios();
-      
        return gson.toJson(list);
-   } 
+   }
 }

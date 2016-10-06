@@ -7,6 +7,7 @@ package servicios.service;
 
 import ObligatorioAS_2016.envio.EnvioBean;
 import ObligatorioAS_2016.entidades.CadeteEntity;
+import ObligatorioAS_2016.entidades.ClienteEntity;
 import ObligatorioAS_2016.entidades.EnvioEntity;
 import com.google.gson.Gson;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -108,4 +110,16 @@ public class EnvioResource {
         }
         return r;
     } 
+  @GET
+  @Path("/envioCliente/{id}")
+  @Consumes(MediaType.TEXT_HTML)
+  public String  getClienteEnvios(@PathParam("id") String id) {
+      String retorno = "";
+      ClienteEntity cliente = new ClienteEntity();
+      cliente.setId(Long.parseLong(id));
+      Gson gson = new Gson();
+      retorno = gson.toJson(envioBean.listarClienteEnvios(cliente.getId()));
+      
+      return retorno;
+  } 
 }

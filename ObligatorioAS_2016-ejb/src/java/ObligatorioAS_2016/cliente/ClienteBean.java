@@ -86,7 +86,9 @@ public class ClienteBean {
     }
 
     public List<ClienteEntity> listarClientesEnvios() {
-       List<ClienteEntity> listaClientes = em.createQuery("SELECT u FROM ClienteEntity u",ClienteEntity.class).getResultList();
+        List<ClienteEntity> listaClientes = em.createQuery("SELECT u "
+                + "FROM ClienteEntity u",
+               ClienteEntity.class).getResultList();
        return listaClientes;
    }
 

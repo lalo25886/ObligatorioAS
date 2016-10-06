@@ -99,6 +99,34 @@ public class EnvioBean {
         + "where e.descripcion = :desc").setParameter("desc", descripcion).getResultList();
         return list;
     }
+    
+   
+    public List<EnvioEntity> listarClienteEnvios(Long idRecibido) {
+         List<EnvioEntity> retorno = null; 
+    try{
+            retorno = 
+                em.createQuery("SELECT      e.emisor.ci,"
+                                        + " e.emisor.nombre,"
+                                        + " e.emisor.apellido,"    
+                                        + " e.dirRetiro,"
+                                        + " e.receptor.nombre,"
+                                        + " e.receptor.apellido,"
+                                        + " e.dirRecibo,"
+                                        + " e.cadete.nombre,"
+                                        + " e.cadete.email,"
+                                        + " e.vehiculo.matricula,"
+                                        + " e.vehiculo.descripcion "
+                                + "FROM EnvioEntity e "
+                                + "WHERE e.emisor.id = :id", EnvioEntity.class)
+                                .setParameter("id", idRecibido).getResultList();
+        }catch(Exception e){
+            log.error("ERROR:"  + e.getMessage() );
+        }
+       
+       return retorno;
+   }
+    
+    
     private void enviarCreacionEnvio(EnvioEntity unEnvio) {
         
         try (Connection connection = connectionFactory.createConnection(); 
@@ -111,13 +139,13 @@ public class EnvioBean {
             productorDeMensajeCadete.send(mensaje);
             mensaje = session.createTextMessage("Estimado cliente estamos realizado en envio:" + unEnvio.getId() + " sera entregado por: " + unEnvio.getCadete().toString());
             productorDeMensajeEmisor.send(mensaje);
-            mensaje = session.createTextMessage("Estimado cliente el envio:"+ unEnvio.getId() + " sera entregado por: " + unEnvio.getCadete().toString());
+            mensaje = session.createTextMessage("Estimado cliente el envio:"+ unEnvio.getId()
+                    + " sera entregado por: " + unEnvio.getCadete().toString());
             productorDeMensajeReceptor.send(mensaje);
-            
             log.info("Envio realizado:" + unEnvio.toString());
-            
         } catch (JMSException ex) {
             log.error("ERROR:"  + ex.getMessage() );
         }   
     }
+     
 }
