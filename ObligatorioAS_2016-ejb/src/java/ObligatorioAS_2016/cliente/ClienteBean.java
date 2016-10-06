@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ObligatorioAS_2016.cliente;
 
 import ObligatorioAS_2016.entidades.ClienteEntity;
@@ -23,54 +18,51 @@ import org.apache.log4j.Logger;
 @LocalBean
 public class ClienteBean {
     static Logger log = Logger.getLogger("FILE");
-    
     @PersistenceContext
     private EntityManager em;
-       
     @PostConstruct
     private void init() {
-
     }
-       
+
     public ClienteEntity agregar(ClienteEntity unClienteEntity) {
         try {
             em.persist(unClienteEntity);
-            return unClienteEntity;     
+            return unClienteEntity;
         } catch (Exception e) {
-            log.error("Error en agregar Cliente Entity: "+ e.getMessage());
+            log.error("Error en agregar Cliente Entity: " + e.getMessage());
         }
          return null;
     }
-    
+
     public ClienteEntity modificar(ClienteEntity unClienteEntity) {
         try {
             em.merge(unClienteEntity);
             return unClienteEntity;
         } catch (Exception e) {
-             log.error("Error en eliminar Cliente Entity: "+ e.getMessage());
+             log.error("Error en eliminar Cliente Entity: " + e.getMessage());
         }
         return null;
-       
     }
-    
+
     public boolean eliminar(ClienteEntity unClienteEntity) {
         try {
-            ClienteEntity aBorrar = em.find(ClienteEntity.class, unClienteEntity.getId());
+            ClienteEntity aBorrar =
+            em.find(ClienteEntity.class, unClienteEntity.getId());
             em.remove(aBorrar);
             return true;
         } catch (Exception e) {
-             log.error("Error en eliminar Cliente Entity: "+ e.getMessage());
+             log.error("Error en eliminar Cliente Entity: " + e.getMessage());
 
         }
           return false;
     }
-    
+
     public List<ClienteEntity> listar() {
-        
-        List<ClienteEntity> list = em.createQuery("select u from ClienteEntity u").getResultList();
+        List<ClienteEntity> list =
+                em.createQuery("select u from ClienteEntity u").getResultList();
         return list;
     }
-    
+
     public Cliente buscar(Long id) {
         ClienteEntity ent = em.find(ClienteEntity.class, id);
         Cliente u = new Cliente();
@@ -78,11 +70,13 @@ public class ClienteBean {
         u.setNombre(ent.getNombre());
         return u;
     }
-    
+
     public List<ClienteEntity> buscar(String nombre) {
-        List<ClienteEntity> list = em.createQuery("select u from ClienteEntity u "
-        + "where u.nombre = :nombre").setParameter("nombre", nombre).getResultList();
-        return list;
+        List<ClienteEntity> listaCliente =
+                em.createQuery("select u from ClienteEntity u "
+                + "where u.nombre = :nombre")
+                .setParameter("nombre", nombre).getResultList();
+        return listaCliente;
     }
 
     public List<ClienteEntity> listarClientesEnvios() {

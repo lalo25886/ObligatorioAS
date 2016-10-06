@@ -22,10 +22,10 @@ import javax.ws.rs.core.UriInfo;
 
 @Path("cliente")
 public class ClienteResource {
-    
+
     @EJB
     private ClienteBean clienteBean;
-    
+
     @Context
     private UriInfo context;
 
@@ -33,7 +33,6 @@ public class ClienteResource {
     }
 
     @GET
-    
     @Path("getJson")
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson() {
@@ -53,7 +52,7 @@ public class ClienteResource {
         if (creado == null) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity("afadfadf")
+                    .entity("Cliente")
                     .build();
         } else {
             r = Response
@@ -62,7 +61,7 @@ public class ClienteResource {
                     .build();
         }
         return r;
-    } 
+    }
     @POST
     @Path("modificarCliente")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -74,7 +73,7 @@ public class ClienteResource {
         if (modificado == null) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity("afadfadf")
+                    .entity("Cliente")
                     .build();
         } else {
             r = Response
@@ -83,7 +82,7 @@ public class ClienteResource {
                     .build();
         }
         return r;
-    } 
+    }
      @POST
     @Path("eliminarCliente")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -92,7 +91,7 @@ public class ClienteResource {
         ClienteEntity u = gson.fromJson(body, ClienteEntity.class);
         Response r;
         Boolean modificado = clienteBean.eliminar(u);
-        if (modificado == false) {
+        if (!modificado) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity("afadfadf")
@@ -104,8 +103,8 @@ public class ClienteResource {
                     .build();
         }
         return r;
-    } 
-     
+    }
+
    @GET
    @Path("getClientesEnvios")
    @Consumes(MediaType.APPLICATION_JSON)

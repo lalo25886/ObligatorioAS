@@ -21,37 +21,37 @@ public class EnvioEntity implements Serializable {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    private Long id;
-   
-   
+
+
    @Column(length = 300)
    private String descripcion;
-   
+
    @ManyToOne(fetch=FetchType.LAZY)
    @JoinColumn(name = "EMISOR_ID")
    private ClienteEntity emisor;
-   
+
    @ManyToOne(fetch = FetchType.EAGER)
    private ClienteEntity receptor;
-   
+
   @ManyToOne(fetch=FetchType.LAZY)
   @JoinColumn(name = "CADETE_ID")
   private CadeteEntity cadete;
 
    @ManyToOne(fetch = FetchType.EAGER)
    private VehiculoEntity vehiculo;
-   
-  
+
+
    @Column(length = 300)
    private String dirRetiro;
-   
+
    @Column(length = 300)
    private String dirRecibo;
 
    public EnvioEntity() {
    }
-    
-   
-   
+
+
+
    public Long getId() {
        return id;
    }
@@ -116,5 +116,5 @@ public class EnvioEntity implements Serializable {
     public void setDirRecibo(String dirRecibo) {
         this.dirRecibo = dirRecibo;
     }
-   
+
 }

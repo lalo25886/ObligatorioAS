@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ObligatorioAS_2016.envio;
 
-//import ObligatorioAS_2016.entidades.EnvioEntity;
 import ObligatorioAS_2016.entidades.EnvioEntity;
 import com.google.gson.Gson;
 import java.util.List;
@@ -31,7 +25,6 @@ import org.apache.log4j.Logger;
 @Stateless
 @LocalBean
 public class EnvioBean {
-    
     static Logger log = Logger.getLogger("FILE");
     @Resource(lookup = "jms/ConnectionFactory")
     private ConnectionFactory connectionFactory;
@@ -45,11 +38,10 @@ public class EnvioBean {
     private EntityManager em;
     @PostConstruct
     private void init() {
-       // System.out.println("INSTANCIA ENVIO BEAN");
     }
-       
+
     public EnvioEntity agregar(EnvioEntity unEnvioEntity) {
-        try { 
+        try {
             em.persist(unEnvioEntity);
             enviarCreacionEnvio(unEnvioEntity);
             return unEnvioEntity;
@@ -58,9 +50,9 @@ public class EnvioBean {
         }
         return null;
     }
- 
+
     public EnvioEntity agregar(String body) {
-       try { 
+       try {
             Gson gson = new Gson();
             EnvioEntity unEnvio = gson.fromJson(body, EnvioEntity.class);
             em.persist(unEnvio);
@@ -71,7 +63,7 @@ public class EnvioBean {
         }
         return null;
     }
-    
+
     public EnvioEntity modificar(EnvioEntity unEnvioEntity) {
         try {
             em.merge(unEnvioEntity);
@@ -81,9 +73,9 @@ public class EnvioBean {
         }
         return null;
     }
-    
+
     public boolean eliminar(EnvioEntity unEnvioEntity) {
-       try { 
+       try {
         EnvioEntity aBorrar = em.find(EnvioEntity.class, unEnvioEntity.getId());
         em.remove(aBorrar);
         return true;
@@ -92,12 +84,13 @@ public class EnvioBean {
         }
        return false;
     }
-    
+
     public List<EnvioEntity> listar() {
-        List<EnvioEntity> list = em.createQuery("select e from EnvioEntity e").getResultList();
+        List<EnvioEntity> list =
+                em.createQuery("select e from EnvioEntity e").getResultList();
         return list;
     }
-    
+
     public Envio buscar(Long id) {
         EnvioEntity ent = em.find(EnvioEntity.class, id);
         Envio e = new Envio();
@@ -105,7 +98,7 @@ public class EnvioBean {
         e.setDescripcion(ent.getDescripcion());
         return e;
     }
-    
+
     public List<EnvioEntity> buscar(String descripcion) {
         List<EnvioEntity> list = em.createQuery("select e "
                 + "from EnvioEntity e "
@@ -113,10 +106,9 @@ public class EnvioBean {
                 .setParameter("desc", descripcion).getResultList();
         return list;
     }
-    
-   
+
     public List<EnvioEntity> listarClienteEnvios(Long idRecibido) {
-         List<EnvioEntity> retorno = null; 
+         List<EnvioEntity> retorno = null;
         try {
             retorno = em.createQuery("SELECT      e.id,"
                                         + " e.descripcion,"
@@ -139,40 +131,48 @@ public class EnvioBean {
         }
        return retorno;
    }
-    
-    
+
     private void enviarCreacionEnvio(EnvioEntity unEnvio) {
-        try (Connection connection = connectionFactory.createConnection(); 
+        try (Connection connection = connectionFactory.createConnection();
             Session session = connection.createSession()) {
-            MessageProducer productorDeMensajeCadete = session.createProducer(queueCadete);
-            MessageProducer productorDeMensajeEmisor = session.createProducer(queueEmisor);
-            MessageProducer productorDeMensajeReceptor = session.createProducer(queueReceptor);    
-            
-            Message mensaje = session.createTextMessage("Cadete tiene un envio pendiente:" + unEnvio.toString());
+            MessageProducer productorDeMensajeCadete =
+                    session.createProducer(queueCadete);
+            MessageProducer productorDeMensajeEmisor =
+                    session.createProducer(queueEmisor);
+            MessageProducer productorDeMensajeReceptor =
+                    session.createProducer(queueReceptor);
+
+            Message mensaje =
+                    session.createTextMessage("Cadete tiene un "
+                            + "envio pendiente:" + unEnvio.toString());
             productorDeMensajeCadete.send(mensaje);
-            mensaje = session.createTextMessage("Estimado cliente estamos realizado en envio:" + unEnvio.getId() + " sera entregado por: " + unEnvio.getCadete().toString());
-            
+            mensaje = session.createTextMessage("Estimado cliente estamos "
+                    + "realizado en envio:" + unEnvio.getId()
+                    + " sera entregado por: " + unEnvio.getCadete().toString());
+
             productorDeMensajeEmisor.send(mensaje);
-            mensaje = session.createTextMessage("Estimado cliente el envio:" + unEnvio.getId() + " sera entregado por: " + unEnvio.getCadete().toString());
+            mensaje = session.createTextMessage("Estimado cliente "
+                    + "el envio:" + unEnvio.getId() + " sera entregado por: "
+                    + unEnvio.getCadete().toString());
             productorDeMensajeReceptor.send(mensaje);
-            
+
             log.info("Envio realizado:" + unEnvio.toString());
         } catch (JMSException ex) {
             log.error("ERROR:"  + ex.getMessage());
         }
     }
-    
+
     public List<EnvioEntity> listarCadeteEnvios(Long idRecibido) {
-         List<EnvioEntity> retorno = null; 
-    try{
-            retorno = 
+         List<EnvioEntity> retorno = null;
+    try {
+            retorno =
                 em.createQuery("SELECT      e.id,"
                                         + " e.descripcion,"
                                         + " e.cadete.nombre,"
                                         + " e.cadete.email,"
                                         + " e.emisor.ci,"
                                         + " e.emisor.nombre,"
-                                        + " e.emisor.apellido,"    
+                                        + " e.emisor.apellido,"
                                         + " e.dirRetiro,"
                                         + " e.receptor.ci,"
                                         + " e.receptor.nombre,"
@@ -183,10 +183,9 @@ public class EnvioBean {
                                 + "FROM EnvioEntity e "
                                 + "WHERE e.cadete.id = :id", EnvioEntity.class)
                                 .setParameter("id", idRecibido).getResultList();
-        }catch(Exception e){
-            log.error("ERROR:"  + e.getMessage() );
+        } catch (Exception e) {
+            log.error("ERROR:"  + e.getMessage());
         }
-       
        return retorno;
    }
 

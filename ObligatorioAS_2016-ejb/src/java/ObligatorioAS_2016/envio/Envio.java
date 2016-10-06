@@ -10,15 +10,15 @@ import java.util.Objects;
 * @author Gonzalo
 */
 public class Envio {
- 
- private Long id;
- private String descripcion;
- private Cliente emisor;
- private Cliente receptor;
- private Cadete cadete;
- private Vehiculo vehiculo;
- private String dirRetiro;
- private String dirRecibo;
+
+private Long id;
+private String descripcion;
+private Cliente emisor;
+private Cliente receptor;
+private Cadete cadete;
+private Vehiculo vehiculo;
+private String dirRetiro;
+private String dirRecibo;
 
    public Long getId() {
        return id;
@@ -83,9 +83,6 @@ public class Envio {
    public void setDirRecibo(String dirRecibo) {
        this.dirRecibo = dirRecibo;
    }
- 
- 
- 
 
    @Override
    public int hashCode() {
@@ -94,15 +91,16 @@ public class Envio {
        return hash;
    }
 
-  
-
    @Override
    public boolean equals(Object object) {
        if (!(object instanceof Envio)) {
            return false;
        }
        Envio other = (Envio) object;
-       return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+       return !((this.id == null
+               && other.id != null)
+               || (this.id != null
+               && !this.id.equals(other.id)));
    }
 
 
@@ -110,6 +108,4 @@ public class Envio {
    public String toString() {
        return "Envio{" + "id=" + id + '}';
    }
- 
- 
 }

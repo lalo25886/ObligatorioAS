@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package servicios.service;
 
 import ObligatorioAS_2016.envio.EnvioBean;
-import ObligatorioAS_2016.entidades.CadeteEntity;
 import ObligatorioAS_2016.entidades.ClienteEntity;
 import ObligatorioAS_2016.entidades.EnvioEntity;
 import com.google.gson.Gson;
@@ -31,7 +26,7 @@ import javax.ws.rs.core.UriInfo;
 public class EnvioResource {
     @EJB
     private EnvioBean envioBean;
-    
+
      @Context
     private UriInfo context;
 
@@ -67,7 +62,8 @@ public class EnvioResource {
                     .build();
         }
         return r;
-    } 
+    }
+
     @POST
     @Path("modificarEnvio")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -88,7 +84,8 @@ public class EnvioResource {
                     .build();
         }
         return r;
-    } 
+    }
+
      @POST
     @Path("eliminarEnvio")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -97,7 +94,7 @@ public class EnvioResource {
         EnvioEntity u = gson.fromJson(body, EnvioEntity.class);
         Response r;
         Boolean modificado = envioBean.eliminar(u);
-        if (modificado == false) {
+        if (!modificado) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity("Envio")
@@ -109,7 +106,8 @@ public class EnvioResource {
                     .build();
         }
         return r;
-    } 
+    }
+
   @GET
   @Path("/envioCliente/{id}")
   @Consumes(MediaType.TEXT_HTML)
@@ -119,7 +117,6 @@ public class EnvioResource {
       cliente.setId(Long.parseLong(id));
       Gson gson = new Gson();
       retorno = gson.toJson(envioBean.listarClienteEnvios(cliente.getId()));
-      
       return retorno;
   } 
 }

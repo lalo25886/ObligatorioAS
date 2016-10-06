@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package servicios.service;
 
 import ObligatorioAS_2016.cadete.CadeteBean;
@@ -30,10 +26,10 @@ import javax.ws.rs.core.UriInfo;
 public class CadeteResource {
     @EJB
     private CadeteBean cadeteBean;
-    
-     @Context
+
+    @Context
     private UriInfo context;
-   
+
     public CadeteResource() {
     }
 
@@ -52,8 +48,6 @@ public class CadeteResource {
     public Response agregar(String body) {
         Gson gson = new Gson();
         CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
-        System.out.println(u.toString());
-        
         Response r;
         CadeteEntity creado = cadeteBean.agregar(u);
         if (creado == null) {
@@ -68,7 +62,8 @@ public class CadeteResource {
                     .build();
         }
         return r;
-    } 
+    }
+
     @POST
     @Path("modificarCadete")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -89,7 +84,7 @@ public class CadeteResource {
                     .build();
         }
         return r;
-    } 
+    }
      @POST
     @Path("eliminarCadete")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -98,7 +93,7 @@ public class CadeteResource {
         CadeteEntity u = gson.fromJson(body, CadeteEntity.class);
         Response r;
         Boolean modificado = cadeteBean.eliminar(u);
-        if (modificado == false) {
+        if (!modificado) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity("Cadete")
@@ -110,7 +105,5 @@ public class CadeteResource {
                     .build();
         }
         return r;
-    } 
-    
-    
+    }
 }

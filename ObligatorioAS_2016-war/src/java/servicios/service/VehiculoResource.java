@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package servicios.service;
 
 import ObligatorioAS_2016.vehiculo.VehiculoBean;
@@ -11,11 +7,8 @@ import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import static javax.ws.rs.HttpMethod.PUT;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -31,8 +24,8 @@ import javax.ws.rs.core.UriInfo;
 public class VehiculoResource {
     @EJB
     private VehiculoBean vehiculoBean;
-    
-     @Context
+
+    @Context
     private UriInfo context;
 
     public VehiculoResource() {
@@ -67,7 +60,8 @@ public class VehiculoResource {
                     .build();
         }
         return r;
-    } 
+    }
+
     @POST
     @Path("modificarVehiculo")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -88,7 +82,8 @@ public class VehiculoResource {
                     .build();
         }
         return r;
-    } 
+    }
+
     @POST
     @Path("eliminarVehiculo")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -97,7 +92,7 @@ public class VehiculoResource {
         VehiculoEntity u = gson.fromJson(body, VehiculoEntity.class);
         Response r;
         Boolean modificado = vehiculoBean.eliminar(u);
-        if (modificado == false) {
+        if (!modificado) {
             r = Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity("Vehiculo")
@@ -109,5 +104,5 @@ public class VehiculoResource {
                     .build();
         }
         return r;
-    } 
+    }
 }

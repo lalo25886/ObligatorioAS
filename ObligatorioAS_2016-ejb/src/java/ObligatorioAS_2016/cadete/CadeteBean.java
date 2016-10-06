@@ -16,27 +16,27 @@ import org.apache.log4j.Logger;
 @Stateless
 @LocalBean
 public class CadeteBean {
-    static Logger log = Logger.getLogger("FILE");    
+    static Logger log = Logger.getLogger("FILE");
     @PersistenceContext
     private EntityManager em;
     @PostConstruct
     private void init() {
         //System.out.println("INSTANCIA CADETE BEAN");
     }
-    
-    public CadeteEntity agregar(CadeteEntity unCadete) {
+
+public CadeteEntity agregar(CadeteEntity unCadete) {
         try {
         em.persist(unCadete);
-        return unCadete;
         } catch (Exception e) {
             log.error("Error al agregar:" + this.getClass().toString()
                     + e.getMessage());
             return null;
         }
+        return unCadete;
     }
 
     public CadeteEntity agregar(String body) {
-       try { 
+       try {
        Gson gson = new Gson();
        CadeteEntity unCadete = gson.fromJson(body, CadeteEntity.class);
         em.persist(unCadete);
@@ -48,7 +48,7 @@ public class CadeteBean {
         }
     }
     public CadeteEntity modificar(Long id, String nombreNuevo) {
-        try { 
+        try {
             CadeteEntity unCadete = em.find(CadeteEntity.class, id);
             unCadete.setNombre(nombreNuevo);
             em.merge(unCadete);
@@ -60,7 +60,7 @@ public class CadeteBean {
         }
     }
       public CadeteEntity modificar(CadeteEntity unCadete) {
-       try { 
+       try {
         em.merge(unCadete);
         return unCadete;
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class CadeteBean {
         }
     }
      public boolean eliminar(CadeteEntity unCadete) {
-        try { 
+        try {
             CadeteEntity aBorrar = em.find(CadeteEntity.class,
                     unCadete.getId());
             em.remove(aBorrar);
@@ -81,9 +81,9 @@ public class CadeteBean {
         }
         return false;
     }
-    
+
     public boolean eliminar(Long id) {
-        try { 
+        try {
         CadeteEntity unCadete = em.find(CadeteEntity.class, id);
         em.remove(unCadete);
         return true;
@@ -93,23 +93,26 @@ public class CadeteBean {
         }
         return false;
     }
-    
+
     public List<CadeteEntity> listar() {        
-        List<CadeteEntity> list = em.createQuery("select u from CadeteEntity u").getResultList();
+        List<CadeteEntity> list =
+                em.createQuery("select u from CadeteEntity u").getResultList();
         return list;
     }
-   
+
     public Cadete buscar(Long id) {
         CadeteEntity unCadeteEntity = em.find(CadeteEntity.class, id);
         Cadete unCadete = new Cadete();
         unCadete .setId(unCadeteEntity.getId());
         unCadete .setNombre(unCadeteEntity.getNombre());
-        return unCadete ;
+        return unCadete;
     }
-    
+
     public List<CadeteEntity> buscar(String nombre) {
-        List<CadeteEntity> listaCadetes = em.createQuery("select c from CadeteEntity c "
-        + "where c.nombre = :nombre").setParameter("nombre", nombre).getResultList();
+        List<CadeteEntity> listaCadetes =
+        em.createQuery("select c from CadeteEntity c "
+        + "where c.nombre = :nombre")
+        .setParameter("nombre", nombre).getResultList();
         return listaCadetes;
-    }   
+    }
 }
