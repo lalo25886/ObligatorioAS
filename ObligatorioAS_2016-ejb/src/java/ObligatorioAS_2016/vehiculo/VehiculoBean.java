@@ -36,7 +36,7 @@ public class VehiculoBean {
     }
 
       public VehiculoEntity modificar(VehiculoEntity c) {
-        em.merge(c); 
+        em.merge(c);
         return c;
     }
     public VehiculoEntity modificar(Long id, String matriculaNueva) {

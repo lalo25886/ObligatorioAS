@@ -66,7 +66,6 @@ public class VehiculoEntity implements Serializable {
    public void setUnCadete(CadeteEntity unCadete) {
        this.unCadete = unCadete;
    }
-   
 
    @Override
    public int hashCode() {

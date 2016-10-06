@@ -21,7 +21,6 @@ public class CadeteBean {
     private EntityManager em;
     @PostConstruct
     private void init() {
-        //System.out.println("INSTANCIA CADETE BEAN");
     }
 
 public CadeteEntity agregar(CadeteEntity unCadete) {

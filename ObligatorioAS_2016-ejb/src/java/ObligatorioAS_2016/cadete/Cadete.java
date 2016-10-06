@@ -10,7 +10,7 @@ import java.util.List;
  * @author Gonzalo
  */
 public class Cadete extends Usuario{
-    
+
     private List<Vehiculo> listaVehiculos;
 
     public List<Vehiculo> getVehiculo() {
@@ -24,5 +24,4 @@ public class Cadete extends Usuario{
     public void agregarVehiculo(Vehiculo unV){
         this.listaVehiculos.add(unV);
     }
-    
 }

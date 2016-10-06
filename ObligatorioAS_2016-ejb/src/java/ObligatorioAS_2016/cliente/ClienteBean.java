@@ -1,7 +1,6 @@
 package ObligatorioAS_2016.cliente;
 
 import ObligatorioAS_2016.entidades.ClienteEntity;
-import com.google.gson.Gson;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
