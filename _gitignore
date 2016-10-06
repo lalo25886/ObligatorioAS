@@ -1,0 +1,23 @@
+#java specific
+*.class
+
+#netbeans ignore personal stuff
+nbproject/
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+# Package Files #
+*.jar
+*.war
+*.ear
+/ObligatorioAS_2016-war/build/
+/ObligatorioAS_2016-ejb/dist/
+/ObligatorioAS_2016-ejb/build/
+/build/
+/dist/
+/ObligatorioAS_2016-war/dist/
