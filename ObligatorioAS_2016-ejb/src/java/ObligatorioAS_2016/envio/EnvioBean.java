@@ -33,52 +33,64 @@ import org.apache.log4j.Logger;
 public class EnvioBean {
     
     static Logger log = Logger.getLogger("FILE");
-    
-    
     @Resource(lookup = "jms/ConnectionFactory")
     private ConnectionFactory connectionFactory;
-    
     @Resource(lookup = "jms/QueueCadete")
     private Queue queueCadete;
-    
     @Resource(lookup = "jms/QueueEmisor")
     private Queue queueEmisor;
-    
     @Resource(lookup = "jms/QueueReceptor")
     private Queue queueReceptor;
-    
-    
     @PersistenceContext
     private EntityManager em;
-       
     @PostConstruct
     private void init() {
        // System.out.println("INSTANCIA ENVIO BEAN");
     }
        
-    public EnvioEntity agregar(EnvioEntity e) {
-         em.persist(e);
-         enviarCreacionEnvio(e);
-         return e;
+    public EnvioEntity agregar(EnvioEntity unEnvioEntity) {
+        try { 
+            em.persist(unEnvioEntity);
+            enviarCreacionEnvio(unEnvioEntity);
+            return unEnvioEntity;
+        } catch (Exception e) {
+            log.error("Error en eliminar Envio Entity: " + e.getMessage());
+        }
+        return null;
     }
  
     public EnvioEntity agregar(String body) {
-       Gson gson = new Gson();
-       EnvioEntity e = gson.fromJson(body, EnvioEntity.class);
-        em.persist(e);
-        enviarCreacionEnvio(e);
-        return e;
+       try { 
+            Gson gson = new Gson();
+            EnvioEntity unEnvio = gson.fromJson(body, EnvioEntity.class);
+            em.persist(unEnvio);
+            enviarCreacionEnvio(unEnvio);
+            return unEnvio;
+        } catch (Exception e) {
+            log.error("Error en agregrar Envio Entity: " + e.getMessage());
+        }
+        return null;
     }
     
-    public EnvioEntity modificar(EnvioEntity u) {
-        em.merge(u);
-        return u;
+    public EnvioEntity modificar(EnvioEntity unEnvioEntity) {
+        try {
+            em.merge(unEnvioEntity);
+            return unEnvioEntity;
+        } catch (Exception e) {
+            log.error("Error en modificar Envio Entity: " + e.getMessage());
+        }
+        return null;
     }
     
-    public boolean eliminar(EnvioEntity u) {
-       EnvioEntity aBorrar = em.find(EnvioEntity.class, u.getId());
+    public boolean eliminar(EnvioEntity unEnvioEntity) {
+       try { 
+        EnvioEntity aBorrar = em.find(EnvioEntity.class, unEnvioEntity.getId());
         em.remove(aBorrar);
         return true;
+        } catch (Exception e) {
+             log.error("Error en eliminar Envio Entity: " + e.getMessage());
+        }
+       return false;
     }
     
     public List<EnvioEntity> listar() {
@@ -95,19 +107,22 @@ public class EnvioBean {
     }
     
     public List<EnvioEntity> buscar(String descripcion) {
-        List<EnvioEntity> list = em.createQuery("select e from EnvioEntity e "
-        + "where e.descripcion = :desc").setParameter("desc", descripcion).getResultList();
+        List<EnvioEntity> list = em.createQuery("select e "
+                + "from EnvioEntity e "
+                + "where e.descripcion = :desc")
+                .setParameter("desc", descripcion).getResultList();
         return list;
     }
     
    
     public List<EnvioEntity> listarClienteEnvios(Long idRecibido) {
          List<EnvioEntity> retorno = null; 
-    try{
-            retorno = 
-                em.createQuery("SELECT      e.emisor.ci,"
+        try {
+            retorno = em.createQuery("SELECT      e.id,"
+                                        + " e.descripcion,"
+                                        + " e.emisor.ci,"
                                         + " e.emisor.nombre,"
-                                        + " e.emisor.apellido,"    
+                                        + " e.emisor.apellido,"
                                         + " e.dirRetiro,"
                                         + " e.receptor.nombre,"
                                         + " e.receptor.apellido,"
@@ -119,33 +134,60 @@ public class EnvioBean {
                                 + "FROM EnvioEntity e "
                                 + "WHERE e.emisor.id = :id", EnvioEntity.class)
                                 .setParameter("id", idRecibido).getResultList();
+       } catch (Exception e) {
+            log.error("Error en consultar Envio Entity: " + e.getMessage());
+        }
+       return retorno;
+   }
+    
+    
+    private void enviarCreacionEnvio(EnvioEntity unEnvio) {
+        try (Connection connection = connectionFactory.createConnection(); 
+            Session session = connection.createSession()) {
+            MessageProducer productorDeMensajeCadete = session.createProducer(queueCadete);
+            MessageProducer productorDeMensajeEmisor = session.createProducer(queueEmisor);
+            MessageProducer productorDeMensajeReceptor = session.createProducer(queueReceptor);    
+            
+            Message mensaje = session.createTextMessage("Cadete tiene un envio pendiente:" + unEnvio.toString());
+            productorDeMensajeCadete.send(mensaje);
+            mensaje = session.createTextMessage("Estimado cliente estamos realizado en envio:" + unEnvio.getId() + " sera entregado por: " + unEnvio.getCadete().toString());
+            
+            productorDeMensajeEmisor.send(mensaje);
+            mensaje = session.createTextMessage("Estimado cliente el envio:" + unEnvio.getId() + " sera entregado por: " + unEnvio.getCadete().toString());
+            productorDeMensajeReceptor.send(mensaje);
+            
+            log.info("Envio realizado:" + unEnvio.toString());
+        } catch (JMSException ex) {
+            log.error("ERROR:"  + ex.getMessage());
+        }
+    }
+    
+    public List<EnvioEntity> listarCadeteEnvios(Long idRecibido) {
+         List<EnvioEntity> retorno = null; 
+    try{
+            retorno = 
+                em.createQuery("SELECT      e.id,"
+                                        + " e.descripcion,"
+                                        + " e.cadete.nombre,"
+                                        + " e.cadete.email,"
+                                        + " e.emisor.ci,"
+                                        + " e.emisor.nombre,"
+                                        + " e.emisor.apellido,"    
+                                        + " e.dirRetiro,"
+                                        + " e.receptor.ci,"
+                                        + " e.receptor.nombre,"
+                                        + " e.receptor.apellido,"
+                                        + " e.dirRecibo,"
+                                        + " e.vehiculo.matricula,"
+                                        + " e.vehiculo.descripcion "
+                                + "FROM EnvioEntity e "
+                                + "WHERE e.cadete.id = :id", EnvioEntity.class)
+                                .setParameter("id", idRecibido).getResultList();
         }catch(Exception e){
             log.error("ERROR:"  + e.getMessage() );
         }
        
        return retorno;
    }
-    
-    
-    private void enviarCreacionEnvio(EnvioEntity unEnvio) {
-        
-        try (Connection connection = connectionFactory.createConnection(); 
-            Session session = connection.createSession()) {
-            MessageProducer productorDeMensajeCadete = session.createProducer(queueCadete);
-            MessageProducer productorDeMensajeEmisor = session.createProducer(queueEmisor);
-            MessageProducer productorDeMensajeReceptor = session.createProducer(queueReceptor);
-         
-            Message mensaje = session.createTextMessage("Cadete tiene un envio pendiente:" + unEnvio.toString());
-            productorDeMensajeCadete.send(mensaje);
-            mensaje = session.createTextMessage("Estimado cliente estamos realizado en envio:" + unEnvio.getId() + " sera entregado por: " + unEnvio.getCadete().toString());
-            productorDeMensajeEmisor.send(mensaje);
-            mensaje = session.createTextMessage("Estimado cliente el envio:"+ unEnvio.getId()
-                    + " sera entregado por: " + unEnvio.getCadete().toString());
-            productorDeMensajeReceptor.send(mensaje);
-            log.info("Envio realizado:" + unEnvio.toString());
-        } catch (JMSException ex) {
-            log.error("ERROR:"  + ex.getMessage() );
-        }   
-    }
-     
+
 }

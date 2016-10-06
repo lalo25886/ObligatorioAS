@@ -42,6 +42,9 @@ public class CadeteEntity implements Serializable {
    @OneToMany
    private List<VehiculoEntity> listaVehiculos;
    
+   @OneToMany(fetch = FetchType.EAGER, mappedBy = "cadete")
+   private List<EnvioEntity> listaEnvios;
+   
    public Long getId() {
        return id;
    }
@@ -109,5 +112,14 @@ public class CadeteEntity implements Serializable {
    public String toString() {
        return "Entidades.Cadete[ id=" + id + " ]";
    }
+
+    public List<EnvioEntity> getListaEnvios() {
+        return listaEnvios;
+    }
+
+    public void setListaEnvios(List<EnvioEntity> listaEnvios) {
+        this.listaEnvios = listaEnvios;
+    }
+   
    
 }

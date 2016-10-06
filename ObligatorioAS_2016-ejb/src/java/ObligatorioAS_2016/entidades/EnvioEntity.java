@@ -1,10 +1,6 @@
 package ObligatorioAS_2016.entidades;
 
-import ObligatorioAS_2016.cadete.Cadete;
-import ObligatorioAS_2016.cliente.Cliente;
-import ObligatorioAS_2016.vehiculo.Vehiculo;
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,10 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 /**
 *
@@ -41,12 +33,14 @@ public class EnvioEntity implements Serializable {
    @ManyToOne(fetch = FetchType.EAGER)
    private ClienteEntity receptor;
    
-   @ManyToOne(fetch = FetchType.EAGER)
-   private CadeteEntity cadete;
-   
+  @ManyToOne(fetch=FetchType.LAZY)
+  @JoinColumn(name = "CADETE_ID")
+  private CadeteEntity cadete;
+
    @ManyToOne(fetch = FetchType.EAGER)
    private VehiculoEntity vehiculo;
    
+  
    @Column(length = 300)
    private String dirRetiro;
    
@@ -106,4 +100,21 @@ public class EnvioEntity implements Serializable {
    public void setVehiculo(VehiculoEntity vehiculo) {
        this.vehiculo = vehiculo;
    }
+
+    public String getDirRetiro() {
+        return dirRetiro;
+    }
+
+    public void setDirRetiro(String dirRetiro) {
+        this.dirRetiro = dirRetiro;
+    }
+
+    public String getDirRecibo() {
+        return dirRecibo;
+    }
+
+    public void setDirRecibo(String dirRecibo) {
+        this.dirRecibo = dirRecibo;
+    }
+   
 }
